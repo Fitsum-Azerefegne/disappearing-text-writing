@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disappearing text writing website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <h1>Random Writing Prompt</h1>
+
+    <button onclick="window.location.reload();">Generate Prompt</button>
+
+    <div id="prompt-container">
+        {% if prompt %}
+            <p>{{ prompt }}</p>
+        {% else %}
+            <p>Click the button to generate a writing prompt!</p>
+        {% endif %}
+    </div>
+    <form action="{{ url_for('writing') }}" method="get">
+        <button>Start writing</button>
+    </form>
+
+</body>
+</html>

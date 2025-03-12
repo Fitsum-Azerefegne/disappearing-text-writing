@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing 1 Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Time is ticking better not stop writing</h1>
+
+    <form method="POST">
+        <textarea id="user-input" name="user_input" placeholder="Start typing...">
+        {{prompt}}
+        </textarea>
+    </form>
+    <div id="timer">
+        {% if elapsed_time > 5 %}
+            <p style="color: red;">You stopped typing for more than 5 seconds!</p>
+        {% endif %}
+    </div>
+</body>
+</html>
