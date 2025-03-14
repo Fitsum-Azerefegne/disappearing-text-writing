@@ -7,17 +7,56 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Time is ticking better not stop writing</h1>
+    <h1>Time is ticking better not stop writing!</h1>
 
     <form method="POST">
-        <textarea id="user-input" name="user_input" placeholder="Start typing...">
-        {{prompt}}
-        </textarea>
+        <textarea id="user-input" name="user_input" >{{ prompt }}</textarea>
+        <input type="hidden" id="last-input-time" name="last_input_time">
     </form>
+
     <div id="timer">
         {% if elapsed_time > 5 %}
             <p style="color: red;">You stopped typing for more than 5 seconds!</p>
         {% endif %}
     </div>
+
+    <script>
+        let startTime = null;
+        let elapsedTime = 0;
+        let timerInterval;
+        let inactivityTimeout;
+        const INACTIVITY_LIMIT = 5000; // 5 seconds
+        const originalPrompt = "{{ prompt }}"; // Store the original prompt
+
+        function startTimer() {
+            if (!startTime) {
+                startTime = Date.now();
+                timerInterval = setInterval(() => {
+                    elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                    document.getElementById('elapsed-time').innerText = elapsedTime + ' seconds';
+                    document.getElementById('last-input-time').value = new Date().toISOString();
+                }, 1000);
+            }
+
+            resetInactivityTimeout();
+        }
+
+        function resetInactivityTimeout() {
+            clearTimeout(inactivityTimeout);
+            inactivityTimeout = setTimeout(() => {
+                const textarea = document.getElementById('user-input');
+
+                // Reset text to prompt only if user entered text other than the prompt
+                if (textarea.value !== originalPrompt) {
+                    textarea.value = originalPrompt;
+                }
+                textarea. Disabled = true; // Disable the textarea
+                alert("You've been inactive for 5 seconds. You should have not stopped writing.");
+            }, INACTIVITY_LIMIT);
+        }
+
+        document.getElementById('user-input').addEventListener('keydown', startTimer);
+        document.getElementById('user-input').addEventListener('keydown', resetInactivityTimeout);
+    </script>
 </body>
 </html>
